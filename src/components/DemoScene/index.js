@@ -20,6 +20,7 @@ class DemoScene extends React.Component {
         carMovement: new THREE.Vector3(0,-.5,8),
         obstructionPosition1: new THREE.Vector3(.1,2,2),
         obstructionPosition2: new THREE.Vector3(.2,3,2),
+        sky: new THREE.Vector3(-.5,7,0),
         // obstructionRotation: new THREE.Euler(2,3.135),
         obstructionRotation: new THREE.Euler(0,0,0),
         playerWidth: .2,
@@ -47,12 +48,20 @@ class DemoScene extends React.Component {
     // let disWidth = this.state.playerWidth + 0.2
 
     if (objX > playerX-disWidth && objX < playerX+disWidth && objY > playerY && objY < playerY+this.state.playerHeight) {
-      this.setState({collisionCount: this.state.collisionCount + 1})
-      console.log("COLLISION HAPPENED", this.state.collisionCount);
-      console.log("----------");
+      let i = 0
+        console.log("this is our counter", i)
+        console.log("COLLISION HAPPENED, this is our state", this.state.collisionCount);
+        console.log("----------");
+      if (i < 1){
+        ++i
+      this.setState({collisionCount: this.state.collisionCount +1}, () => setTimeout(this.emptyFunction,500))
+      }
     }
   }
 
+  emptyFunction = () => {
+    console.log('empty function ran')
+  }
 
   _onAnimate = () => {
     this.detectCollision()
@@ -182,12 +191,17 @@ class DemoScene extends React.Component {
             <meshBasicMaterial color={'grey'}/>
           </mesh>
 
+          <mesh position={this.state.sky}>
+            <planeGeometry width={50} height={4} widthSegments={200} heightSegments={200}/>
+            <meshBasicMaterial color={'blue'}/>
+          </mesh>
+
           <mesh rotation={new THREE.Euler(2,3.135)} position={this.state.whiteLineMovement} >
             <planeGeometry width={.2} height={3}/>
             <meshBasicMaterial color={'white'}/>
           </mesh>
 
-          <mesh  rotation={this.state.obstructionRotation} position={this.state.obstructionPosition1}>
+          <mesh rotation={this.state.obstructionRotation} position={this.state.obstructionPosition1}>
             <boxGeometry width={this.state.playerWidth} height={this.state.playerHeight} depth={this.state.playerDepth}/>
             <meshBasicMaterial color={'red'}/>
           </mesh>
